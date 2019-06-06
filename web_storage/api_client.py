@@ -7,6 +7,8 @@ https://ondotori.webstorage.jp/docs/api/index.html
 import requests
 import json
 
+from .exception import detect_exception
+
 class WebStorageAPIClient:
 
     def __init__(self, auth):
@@ -34,8 +36,9 @@ class WebStorageAPIClient:
         if response.ok:
             return response
         else:
-            error = response.json()['error']
-            raise RuntimeError('code:{}, message:{}'.format(error['code'], error['message']))
+            detect_exception(response) 
+            # error = response.json()['error']
+            # raise RuntimeError('code:{}, message:{}'.format(error['code'], error['message']))
 
     def get_current(self, device_serials=None):
         """ Get Current
