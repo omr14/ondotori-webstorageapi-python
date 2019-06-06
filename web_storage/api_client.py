@@ -8,6 +8,7 @@ import requests
 import json
 
 from .response import WebStorageAPIResponse
+from .exception import detect_exception
 
 class WebStorageAPIClient:
 
@@ -36,8 +37,7 @@ class WebStorageAPIClient:
         if response.ok:
             return WebStorageAPIResponse(response)
         else:
-            error = response.json()['error']
-            raise RuntimeError('WebStorageAPI code:{} message:{}'.format(error['code'], error['message']))
+            detect_exception(response) 
 
     def get_current(self, device_serials=None):
         """ Get Current
